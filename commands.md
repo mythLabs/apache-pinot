@@ -1,9 +1,11 @@
+sudo docker-compose --project-name pinot-demo up
+------------------------------------
 https://docs.pinot.apache.org/basics/data-import/pinot-stream-ingestion/import-from-apache-kafka#upload-schema-and-table
 ---------------------------------------------
 docker run \
     --network=pinot-demo_default \
     -v /home/amit/pinot:/home/amit/pinot \
-    --name pinot-streaming-table-creation1 \
+    --name pinot-streaming-table-creation6 \
     apachepinot/pinot:latest AddTable \
     -schemaFile /home/amit/pinot/employee-schema.json \
     -tableConfigFile /home/amit/pinot/employee-table-realtime.json \
@@ -37,7 +39,7 @@ curl -X POST \
          "value.converter":"org.apache.kafka.connect.storage.StringConverter",
          "key.converter.schemas.enable":false,
          "value.converter.schemas.enable":false, 
-         "pipeline":"[{\"$match\": {\"operationType\": \"insert\"}}]"
+         "pipeline": "[{\"$match\":{\"operationType\": { \"$in\": [ \"update\",\"insert\" ]}}}]"
          }
      }
      ' \
@@ -49,6 +51,22 @@ https://www.mongodb.com/docs/kafka-connector/current/quick-start/#send-the-conte
 -----------------
 https://docs.pinot.apache.org/basics/data-import/pinot-stream-ingestion/import-from-apache-kafka
 -----------------------
-db.sampleData.insertOne({"ID": 100,"firstName": "Natalie","lastName": "Jones","timestamp": 1571900400000})
+db.sampleData.insertOne({"ID": 102,"firstName": "Methew","lastName": "perry","timestamp": 1571900400000})
 
 ------------
+
+db.sampleData.findOne({"ID": 100 })
+
+---------------------------
+
+db.sampleData.updateOne({"ID": 102 }, {$set: {lastName: "Mathew"}})
+-----------------
+
+sudo docker-compose -f docker-compose-non-dev.yml up
+
+------------------
+
+pinot+http://manual-pinot-broker:8099/query?controller=http://manual-pinot-controller:9000/``
+
+-----------------
+

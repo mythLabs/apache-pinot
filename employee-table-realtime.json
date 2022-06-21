@@ -20,9 +20,17 @@
         "realtime.segment.flush.threshold.time": "3600000",
         "realtime.segment.flush.threshold.rows": "50000",
         "stream.kafka.consumer.prop.auto.offset.reset": "smallest"
-      }
+      },
+      "nullHandlingEnabled": true
     },
     "metadata": {
       "customConfigs": {}
+    },
+    "routing": {
+      "instanceSelectorType": "strictReplicaGroup"
+    },
+    "upsertConfig": {
+      "mode": "PARTIAL",
+      "defaultPartialUpsertStrategy": "OVERWRITE"
     }
   }
